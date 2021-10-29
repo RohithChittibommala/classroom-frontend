@@ -28,11 +28,7 @@ function Navbar() {
         <IconButton onClick={handleOpenDrawer}>
           <MenuIcon />
         </IconButton>
-        <img
-          src="http://iiitvadodara.ac.in/img/Logo.jpg"
-          alt="iiitv logo"
-          className={classes.logo}
-        />
+        <img src="/logo.jpg" alt="iiitv logo" className={classes.logo} />
         <Typography
           variant="subtitle1"
           style={{

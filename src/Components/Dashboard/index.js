@@ -131,7 +131,7 @@ function Dashboard() {
         {state.courses.map((course, index) => (
           <ClassroomCard
             key={course._id}
-            showButtons={state.role === "student"}
+            showButtons={false}
             course={course}
             admin={state.role === "admin"}
             color={colors[index % (colors.length - 1)]}
