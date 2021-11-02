@@ -39,6 +39,8 @@ const api = {
 
   approveCourse: (data) => axiosInstance.post("/course/approve", data),
   rejectCourse: (data) => axiosInstance.post("/course/delete", data),
+
+  submitAssignment: (data) => axiosInstance.post("/assignment", data),
 };
 
 export default api;

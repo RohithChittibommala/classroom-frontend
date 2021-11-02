@@ -8,12 +8,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { useEffect, useState } from "react";
-
+import DropBoxChooser from "react-dropbox-chooser";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-
 import { useParams } from "react-router-dom";
 import api from "../../network";
-
 import { useAppState } from "../../state";
 import CreateAnnouncement from "../modals/CreateAnnouncement";
 import CreateAssignment from "../modals/CreateAssignment";
@@ -69,6 +67,23 @@ function CourseDetails() {
         console.log(err);
       });
   }
+
+  const handleAssignmentSubmit = (props) => {
+    const data = {
+      ...props,
+      studentId: state.user._id,
+      courseCode: courseDetails.courseCode,
+    };
+
+    api
+      .submitAssignment(data)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (loading)
     return <LinearProgress sx={{ position: "relative", top: -10 }} />;
@@ -133,6 +148,8 @@ function CourseDetails() {
           <ShowAssignments
             assingments={courseDetails.assignments}
             instructor={instructor}
+            role={state.role}
+            handleAssignmentSubmit={handleAssignmentSubmit}
           />
         ) : (
           <ShowAnnouncements
@@ -177,8 +194,23 @@ function ShowAnnouncements({ announcements, instructor }) {
   // ({ })
 }
 
-function ShowAssignments({ assingments, instructor }) {
-  return assingments?.map((item) => (
+function ShowAssignments({ assingments, ...props }) {
+  return assingments?.map((item) => <Assignment key={item._id} {...props} />);
+  // ({ })
+}
+
+function Assignment({ item, instructor, role, handleAssignmentSubmit }) {
+  const isStudent = role === "student";
+
+  const onUploadSuccess = (file) => {
+    const data = {
+      assingnmentId: item._id,
+      file: file.link,
+    };
+    handleAssignmentSubmit(data);
+  };
+
+  return (
     <Layout key={item._id}>
       <Header>
         <Image src={instructor.imageUrl} />
@@ -206,26 +238,38 @@ function ShowAssignments({ assingments, instructor }) {
         >
           {item.description}
         </Typography>
-        {item.pdf && (
-          <a
-            href={item.pdf}
-            target="_blank"
-            rel="noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <Button
-              color="primary"
-              startIcon={<AttachFileIcon />}
-              style={{ nargin: "10px 0" }}
+        <BtnContainer>
+          {item.pdf && (
+            <a
+              href={item.pdf}
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: "none" }}
             >
-              Attachment
-            </Button>
-          </a>
-        )}
+              <Button
+                color="primary"
+                variant="outlined"
+                startIcon={<AttachFileIcon />}
+                style={{ margin: "10px 0" }}
+              >
+                Attachment
+              </Button>
+            </a>
+          )}
+          {isStudent && (
+            <DropBoxChooser
+              appKey={"33gskexm27bl6ql"}
+              success={onUploadSuccess}
+              cancel={() => console.log("closed")}
+              extensions={[".pdf"]}
+            >
+              <Button variant="text">Upload File</Button>
+            </DropBoxChooser>
+          )}
+        </BtnContainer>
       </Content>
     </Layout>
-  ));
-  // ({ })
+  );
 }
 
 const Banner = styled("div")`
