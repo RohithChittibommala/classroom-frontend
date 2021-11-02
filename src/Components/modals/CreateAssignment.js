@@ -7,6 +7,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
+import { Document } from "react-pdf";
 import { styled } from "@mui/system";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
@@ -64,7 +65,7 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
   }
 
   const onUploadSuccess = (files) => {
-    console.log(files);
+    setFile(files[0].link);
   };
 
   return (
@@ -118,10 +119,13 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
             }
           />
 
+          {file && <Document file={file} sx={{ margin: "10px 0" }} />}
+
           <DropBoxChooser
             appKey={"33gskexm27bl6ql"}
             success={onUploadSuccess}
             cancel={() => console.log("closed")}
+            extensions={[".pdf"]}
           >
             <Button
               variant="outlined"
