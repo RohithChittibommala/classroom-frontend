@@ -25,6 +25,10 @@ const api = {
     axiosInstance.post("instructor/create_course", course),
   createAnnouncement: (announcement) =>
     axiosInstance.post("/course/create_announcement", announcement),
+
+  createAssignment: (assignment) =>
+    axiosInstance.post("/course/create_assignment", assignment),
+
   enrollInCourse: (courseCode) =>
     axiosInstance.post(`/course/enroll/${courseCode}`),
   register: (data) => axiosInstance.post("/register", data),
