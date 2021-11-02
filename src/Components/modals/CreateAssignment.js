@@ -40,8 +40,6 @@ const date = new Date();
 const tomorrow = new Date(date.getTime() + 30 * 60 * 1000);
 
 function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
-  const inputRef = useRef();
-
   const [file, setFile] = useState(null);
 
   const formik = useFormik({
@@ -53,7 +51,7 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
   function handleSubmit(val) {
     console.log(val);
 
-    const data = { ...val, pdf: file };
+    const data = { ...val, pdf: file.link };
 
     formik.resetForm();
 
@@ -129,21 +127,24 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
             </UploadedFile>
           )}
 
-          <DropBoxChooser
-            appKey={"33gskexm27bl6ql"}
-            success={onUploadSuccess}
-            cancel={() => console.log("closed")}
-            extensions={[".pdf"]}
-            disabled={file}
-          >
-            <Button
-              variant="outlined"
-              endIcon={<CloudUploadRoundedIcon />}
-              sx={{ mb: "10px" }}
+          {!file && (
+            <DropBoxChooser
+              appKey={"33gskexm27bl6ql"}
+              success={onUploadSuccess}
+              cancel={() => console.log("closed")}
+              extensions={[".pdf"]}
+              disabled={file}
             >
-              Upload File
-            </Button>
-          </DropBoxChooser>
+              <Button
+                variant="outlined"
+                endIcon={<CloudUploadRoundedIcon />}
+                sx={{ mb: "10px" }}
+              >
+                Upload File
+              </Button>
+            </DropBoxChooser>
+          )}
+
           <MyButton
             label="create"
             sx={{ display: "block" }}

@@ -43,16 +43,19 @@ function CourseDetails() {
   }
 
   function createAssignment(props) {
-    console.log(props);
+    const data = {
+      ...props,
+      courseCode: courseDetails.courseCode,
+    };
 
-    fetch(`https://www.googleapis.com/upload/drive/v3/files?uploadType=media`, {
-      method: "POST",
-      headers: {
-        contentType: "pdf",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+    api
+      .createAssignment(data)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   if (loading)
