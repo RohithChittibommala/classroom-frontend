@@ -211,7 +211,7 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit }) {
 
     const data = {
       assignmentId: item._id,
-      pdf: file.link,
+      pdf: file[0].link,
     };
     handleAssignmentSubmit(data);
   };
