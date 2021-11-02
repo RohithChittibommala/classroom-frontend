@@ -7,20 +7,19 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { Document } from "react-pdf";
+
 import { styled } from "@mui/system";
 import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
 import DropBoxChooser from "react-dropbox-chooser";
 import { useFormik } from "formik";
-import DeleteIcon from "@mui/icons-material/Delete";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import * as Yup from "yup";
 import MyButton from "../../base/MyButton";
 import MyTextField from "../../base/MyTextField";
-import api from "../../network";
 
 const validationSchema = Yup.object().shape({
   description: Yup.string().required().label("Description"),
@@ -65,7 +64,9 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
   }
 
   const onUploadSuccess = (files) => {
-    setFile(files[0].link);
+    console.log(files);
+
+    setFile(files[0]);
   };
 
   return (
@@ -119,13 +120,21 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
             }
           />
 
-          {file && <Document file={file} sx={{ margin: "10px 0" }} />}
+          {file && (
+            <UploadedFile>
+              <Typography variant="body1">{file.name}</Typography>
+              <IconButton onClick={() => setFile(null)}>
+                <DeleteIcon sx={{ color: "#f96c49" }} />
+              </IconButton>
+            </UploadedFile>
+          )}
 
           <DropBoxChooser
             appKey={"33gskexm27bl6ql"}
             success={onUploadSuccess}
             cancel={() => console.log("closed")}
             extensions={[".pdf"]}
+            disabled={file}
           >
             <Button
               variant="outlined"
