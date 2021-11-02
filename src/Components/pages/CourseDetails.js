@@ -61,7 +61,12 @@ function CourseDetails() {
     api
       .createAssignment(data)
       .then(({ data }) => {
-        console.log(data);
+        setCourseDetails((data) => ({
+          ...data,
+          assignments: data.assignments.filter(
+            (assignment) => assignment._id !== props.assignmentId
+          ),
+        }));
       })
       .catch((err) => {
         console.log(err);
@@ -151,6 +156,7 @@ function CourseDetails() {
             assingments={courseDetails.assignments}
             instructor={instructor}
             role={state.role}
+            id={state.user._id}
             handleAssignmentSubmit={handleAssignmentSubmit}
           />
         ) : (
@@ -203,12 +209,10 @@ function ShowAssignments({ assingments, ...props }) {
   // ({ })
 }
 
-function Assignment({ item, instructor, role, handleAssignmentSubmit }) {
+function Assignment({ item, instructor, role, handleAssignmentSubmit, id }) {
   const isStudent = role === "student";
 
   const onUploadSuccess = (file) => {
-    console.log(file);
-
     const data = {
       assignmentId: item._id,
       pdf: file[0].link,
@@ -262,18 +266,27 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit }) {
               </Button>
             </a>
           )}
-          {isStudent && (
-            <DropBoxChooser
-              appKey={"33gskexm27bl6ql"}
-              success={onUploadSuccess}
-              cancel={() => console.log("closed")}
-              extensions={[".pdf"]}
-            >
-              <Button sx={{ marginLeft: "20px" }} variant="text">
-                Upload File
+          {isStudent &&
+            (item.submissions.find((s) => s.studentId === id) ? (
+              <Button
+                sx={{ marginLeft: "20px" }}
+                color="success"
+                variant="text"
+              >
+                Turned In
               </Button>
-            </DropBoxChooser>
-          )}
+            ) : (
+              <DropBoxChooser
+                appKey={"33gskexm27bl6ql"}
+                success={onUploadSuccess}
+                cancel={() => console.log("closed")}
+                extensions={[".pdf"]}
+              >
+                <Button sx={{ marginLeft: "20px" }} variant="text">
+                  Upload File
+                </Button>
+              </DropBoxChooser>
+            ))}
         </BtnContainer>
       </Content>
     </Layout>
