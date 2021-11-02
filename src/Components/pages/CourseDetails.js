@@ -1,6 +1,16 @@
-import { LinearProgress, Container, Typography, Button } from "@mui/material";
+import {
+  LinearProgress,
+  Container,
+  Typography,
+  Button,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
 import { styled } from "@mui/system";
 import { useEffect, useState } from "react";
+
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+
 import { useParams } from "react-router-dom";
 import api from "../../network";
 
@@ -16,6 +26,8 @@ function CourseDetails() {
   const [isAnnouncementModalOpen, setAnnouncementModalOpen] = useState(false);
 
   const [isAssingmentModalOpen, setAssignmentModalOpen] = useState(false);
+
+  const [checked, setChecked] = useState(false);
 
   const { state } = useAppState();
 
@@ -104,41 +116,117 @@ function CourseDetails() {
             </Button>
           </BtnContainer>
         )}
+        <FormControlLabel
+          sx={{ marginLeft: "auto" }}
+          control={
+            <Switch
+              checked={checked}
+              onChange={(e) => setChecked(e.target.checked)}
+            />
+          }
+          label="Show Assignments"
+        />
       </OptionsContainer>
 
-      <AnnouncementContainer>
-        {courseDetails?.announcements?.map((item) => (
-          <Announcement key={item._id}>
-            <AnnouncementHeader>
-              <Image src={instructor.imageUrl} />
-              <PersonDetails>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ color: "#444", fontWeight: 500 }}
-                >
-                  {instructor.name}
-                </Typography>
-                <Typography variant="caption" sx={{ color: "#5F6368" }}>
-                  {new Date(item.date).toDateString()}
-                </Typography>
-              </PersonDetails>
-            </AnnouncementHeader>
-            <AnnouncementContent>
-              <Typography
-                variant="body1"
-                sx={{ fontSize: "15px", color: "rgb(0 0 0 / 87%)" }}
-              >
-                {item.text}
-              </Typography>
-            </AnnouncementContent>
-          </Announcement>
-        ))}
-      </AnnouncementContainer>
+      <DetailsContainer>
+        {checked ? (
+          <ShowAssignments
+            assingments={courseDetails.assignments}
+            instructor={instructor}
+          />
+        ) : (
+          <ShowAnnouncements
+            announcements={courseDetails.announcements}
+            instructor={instructor}
+          />
+        )}
+      </DetailsContainer>
     </Container>
   );
 }
 
 export default CourseDetails;
+
+function ShowAnnouncements({ announcements, instructor }) {
+  return announcements?.map((item) => (
+    <Layout key={item._id}>
+      <Header>
+        <Image src={instructor.imageUrl} />
+        <PersonDetails>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: "#444", fontWeight: 500 }}
+          >
+            {instructor.name}
+          </Typography>
+          <Typography variant="caption" sx={{ color: "#5F6368" }}>
+            {new Date(item.date).toDateString()}
+          </Typography>
+        </PersonDetails>
+      </Header>
+      <Content>
+        <Typography
+          variant="body1"
+          sx={{ fontSize: "15px", color: "rgb(0 0 0 / 87%)" }}
+        >
+          {item.text}
+        </Typography>
+      </Content>
+    </Layout>
+  ));
+  // ({ })
+}
+
+function ShowAssignments({ assingments, instructor }) {
+  return assingments?.map((item) => (
+    <Layout key={item._id}>
+      <Header>
+        <Image src={instructor.imageUrl} />
+        <PersonDetails>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: "#444", fontWeight: 500 }}
+          >
+            {instructor.name}
+          </Typography>
+          <Typography variant="caption" sx={{ color: "#5F6368" }}>
+            {new Date(item.date).toDateString()}
+          </Typography>
+        </PersonDetails>
+        <Button variant="text" color="error" style={{ marginLeft: "auto" }}>
+          Deadline - {new Date(item.deadline).toDateString()} {"  "}
+          {new Date(item.deadline).toLocaleTimeString()}
+        </Button>
+      </Header>
+      <Content>
+        <Typography
+          variant="body1"
+          sx={{ fontSize: "15px", color: "rgb(0 0 0 / 87%)" }}
+          gutterBottom
+        >
+          {item.description}
+        </Typography>
+        {item.pdf && (
+          <a
+            href={item.pdf}
+            target="_blank"
+            rel="noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <Button
+              color="primary"
+              startIcon={<AttachFileIcon />}
+              style={{ nargin: "10px 0" }}
+            >
+              Attachment
+            </Button>
+          </a>
+        )}
+      </Content>
+    </Layout>
+  ));
+  // ({ })
+}
 
 const Banner = styled("div")`
   height: 220px;
@@ -152,7 +240,7 @@ const Banner = styled("div")`
   margin-bottom: 20px;
 `;
 
-const Announcement = styled("div")`
+const Layout = styled("div")`
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 6px 0px 8px rgba(0, 0, 0, 0.1);
@@ -160,12 +248,12 @@ const Announcement = styled("div")`
   padding: 24px;
 `;
 
-const AnnouncementContainer = styled("div")`
+const DetailsContainer = styled("div")`
   padding: 10px;
   margin-left: auto;
 `;
 
-const AnnouncementHeader = styled("div")`
+const Header = styled("div")`
   display: flex;
   align-items: center;
 `;
@@ -182,12 +270,14 @@ const PersonDetails = styled("div")`
   flex-direction: column;
 `;
 
-const AnnouncementContent = styled("div")`
+const Content = styled("div")`
   padding: 10px 0;
+  margin-top: 10px;
 `;
 
 const OptionsContainer = styled("div")`
   padding: 10px;
+  display: flex;
 `;
 
 const BtnContainer = styled("div")`
