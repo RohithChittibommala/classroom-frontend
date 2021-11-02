@@ -63,11 +63,9 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
     handleClose();
   }
 
-  function handleUploadBtnClick() {}
-
-  function handleFileUpload(e) {
-    setFile(e.target.files[0]);
-  }
+  const onUploadSuccess = (files) => {
+    console.log(files);
+  };
 
   return (
     <Modal
@@ -119,23 +117,20 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
               formik.setFieldValue("deadline", new Date(date))
             }
           />
-          {file && (
-            <UploadedFile>
-              <Typography variant="body1">{file.name}</Typography>
-              <IconButton onClick={() => setFile(null)}>
-                <DeleteIcon sx={{ color: "#f96c49" }} />
-              </IconButton>
-            </UploadedFile>
-          )}
-          <Button
-            variant="outlined"
-            endIcon={<CloudUploadRoundedIcon />}
-            sx={{ mb: "10px" }}
-            onClick={handleUploadBtnClick}
+
+          <DropBoxChooser
+            appKey={"33gskexm27bl6ql"}
+            success={onUploadSuccess}
+            cancel={() => console.log("closed")}
           >
-            Upload File
-            <DropBoxChooser appKey={"33gskexm27bl6ql"}></DropBoxChooser>
-          </Button>
+            <Button
+              variant="outlined"
+              endIcon={<CloudUploadRoundedIcon />}
+              sx={{ mb: "10px" }}
+            >
+              Upload File
+            </Button>
+          </DropBoxChooser>
           <MyButton
             label="create"
             sx={{ display: "block" }}
