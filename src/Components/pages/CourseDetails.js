@@ -75,6 +75,8 @@ function CourseDetails() {
       courseCode: courseDetails.courseCode,
     };
 
+    console.log(data);
+
     api
       .submitAssignment(data)
       .then(({ data }) => {
@@ -205,6 +207,8 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit }) {
   const isStudent = role === "student";
 
   const onUploadSuccess = (file) => {
+    console.log(file);
+
     const data = {
       assignmentId: item._id,
       pdf: file.link,
