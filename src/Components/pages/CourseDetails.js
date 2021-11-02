@@ -206,8 +206,8 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit }) {
 
   const onUploadSuccess = (file) => {
     const data = {
-      assingnmentId: item._id,
-      file: file.link,
+      assignmentId: item._id,
+      pdf: file.link,
     };
     handleAssignmentSubmit(data);
   };
