@@ -195,7 +195,9 @@ function ShowAnnouncements({ announcements, instructor }) {
 }
 
 function ShowAssignments({ assingments, ...props }) {
-  return assingments?.map((item) => <Assignment key={item._id} {...props} />);
+  return assingments?.map((item) => (
+    <Assignment key={item._id} item={item} {...props} />
+  ));
   // ({ })
 }
 
@@ -263,7 +265,9 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit }) {
               cancel={() => console.log("closed")}
               extensions={[".pdf"]}
             >
-              <Button variant="text">Upload File</Button>
+              <Button sx={{ marginLeft: "20px" }} variant="text">
+                Upload File
+              </Button>
             </DropBoxChooser>
           )}
         </BtnContainer>
@@ -326,7 +330,7 @@ const OptionsContainer = styled("div")`
 
 const BtnContainer = styled("div")`
   display: flex;
-
+  align-items: center;
   & > button {
     margin-right: 10px;
   }
