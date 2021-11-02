@@ -51,7 +51,7 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
   function handleSubmit(val) {
     console.log(val);
 
-    const data = { ...val, pdf: file.link };
+    const data = { ...val, pdf: file?.link };
 
     formik.resetForm();
 
