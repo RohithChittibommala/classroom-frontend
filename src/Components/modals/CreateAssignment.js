@@ -134,9 +134,7 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
             onClick={handleUploadBtnClick}
           >
             Upload File
-            <DropBoxChooser
-              appKey={process.env.REACT_APP_DROPBOX_APP_KEY}
-            ></DropBoxChooser>
+            <DropBoxChooser appKey={"33gskexm27bl6ql"}></DropBoxChooser>
           </Button>
           <MyButton
             label="create"
