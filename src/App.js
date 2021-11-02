@@ -10,6 +10,7 @@ import NotFound from "./Components/NotFound";
 import Pending from "./Components/Pending";
 import ApprovedCourses from "./Components/pages/ApprovedCourses";
 import Instructors from "./Components/admin/Instructors";
+import CourseDetails from "./Components/pages/CourseDetails";
 function App() {
   let { state } = useAppState();
 
@@ -22,10 +23,12 @@ function App() {
         <PrivateRoute exact path="/" component={Dashboard} />
         <PrivateRoute exact path="/approved" component={ApprovedCourses} />
         <PrivateRoute exact path="/pending" component={Pending} />
+        <CourseRoute exact path="/c/:id" component={CourseDetails} />
         <AdminRoute exact path="/instructors" component={Instructors} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Signup} />
         <Route exact path="*" component={NotFound} />
+        <Route exact path="/notfound" component={NotFound} />
       </Switch>
     </div>
   );
@@ -51,17 +54,25 @@ function AdminRoute(props) {
   return state.user && state.user.isAdmin ? (
     <Route {...props} />
   ) : (
-    <Redirect to="*" />
+    <Redirect to="/notfound" />
   );
 }
 
-function InstructorRoute(props) {
+function CourseRoute(props) {
   let { state } = useAppState();
-  return state.user && state.user.isInstructor ? (
-    <Route {...props} />
-  ) : (
-    <Redirect to="/" />
-  );
+
+  if (!state.user) return <Redirect to="/notfound" />;
+
+  const courses = state.courses;
+
+  const doesItInclude = courses
+    .map((c) => c._id)
+    .includes(props.computedMatch.params.id);
+
+  if (!doesItInclude && state.role !== "admin")
+    return <Redirect to="/notfound" />;
+
+  return <Route {...props} />;
 }
 
 export default App;

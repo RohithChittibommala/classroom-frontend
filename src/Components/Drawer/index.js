@@ -7,7 +7,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import BookIcon from "@mui/icons-material/Book";
 import HomeIcon from "@mui/icons-material/Home";
-import DoneIcon from "@mui/icons-material/Done";
 import PersonIcon from "@mui/icons-material/Person";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import { styled } from "@mui/material/styles";

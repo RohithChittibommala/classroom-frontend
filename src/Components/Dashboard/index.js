@@ -10,6 +10,7 @@ import MyAlert from "../../base/MyAlert";
 import CreateInstructor from "../modals/CreateInstructor";
 import CreateCourse from "../modals/CreateCourse";
 import { styled } from "@mui/system";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const { dispatch, state } = useAppState();
@@ -33,8 +34,8 @@ function Dashboard() {
       api.getApprovedCourses().then(({ data }) => dispatch(setCourses(data)));
     else if (state.role === "student") {
       api.getEnrolledCourses(state.user._id).then(({ data }) => {
-        console.log(data.courses?.filter((c) => c.isApproved));
-        dispatch(setCourses(data.courses?.filter((c) => c.isApproved)));
+        console.log(data?.courses?.filter((c) => c.isApproved));
+        dispatch(setCourses(data?.courses?.filter((c) => c.isApproved)));
       });
     } else {
       api.getCoursesByInstructor().then(({ data }) => {
@@ -43,8 +44,6 @@ function Dashboard() {
       });
     }
   }
-
-  console.log({ state });
 
   const handleCreateInstructor = async (val) => {
     try {
@@ -89,57 +88,61 @@ function Dashboard() {
         <CircularProgress />
       </CenterContainer>
     );
-  }
-  return (
-    <div className={classes.container}>
-      {showAlert && (
-        <MyAlert
-          message={error.message}
-          severity={error.status}
-          onClose={() => setShowAlert(false)}
-        />
-      )}
-      {state.role === "admin" && (
-        <>
-          <CreateInstructor
-            handleClose={() => setIsOpen(false)}
-            open={isOpen}
-            handleCreateInstructor={handleCreateInstructor}
+  } else {
+    return (
+      <div className={classes.container}>
+        {showAlert && (
+          <MyAlert
+            message={error.message}
+            severity={error.status}
+            onClose={() => setShowAlert(false)}
           />
-          <Options onClick={() => setIsOpen(true)} label="ADD INSTRUCTOR" />
-        </>
-      )}
-      {state.role === "instructor" && (
-        <>
-          <CreateCourse
-            handleClose={() => setIsOpen(false)}
-            open={isOpen}
-            handleCreateCourse={handleCreateCourse}
-          />
-          <Options onClick={() => setIsOpen(true)} label="ADD COURSE" />
-        </>
-      )}
-      {state.courses.length === 0 && (
-        <CenterContainer>
-          <Typography variant="h3" fontWeight="500" sx={{ color: "#BABABA" }}>
-            You didn't have any courses yet.
-          </Typography>
-        </CenterContainer>
-      )}
+        )}
+        {state.role === "admin" && (
+          <>
+            <CreateInstructor
+              handleClose={() => setIsOpen(false)}
+              open={isOpen}
+              handleCreateInstructor={handleCreateInstructor}
+            />
+            <Options onClick={() => setIsOpen(true)} label="ADD INSTRUCTOR" />
+          </>
+        )}
+        {state.role === "instructor" && (
+          <>
+            <CreateCourse
+              handleClose={() => setIsOpen(false)}
+              open={isOpen}
+              handleCreateCourse={handleCreateCourse}
+            />
+            <Options onClick={() => setIsOpen(true)} label="ADD COURSE" />
+          </>
+        )}
+        {state.courses.length === 0 && loading && (
+          <CenterContainer>
+            <Typography variant="h3" fontWeight="500" sx={{ color: "#BABABA" }}>
+              You didn't have any courses yet.
+            </Typography>
+          </CenterContainer>
+        )}
 
-      <div className={classes.cardContainer}>
-        {state.courses.map((course, index) => (
-          <ClassroomCard
-            key={course._id}
-            showButtons={false}
-            course={course}
-            admin={state.role === "admin"}
-            color={colors[index % (colors.length - 1)]}
-          />
-        ))}
+        <div className={classes.cardContainer}>
+          {state.courses.map((course, index) => (
+            <div key={course._id}>
+              <Link to={`c/${course._id}`} style={{ textDecoration: "none" }}>
+                <ClassroomCard
+                  showButtons={false}
+                  course={course}
+                  admin={state.role === "admin"}
+                  color={colors[index % (colors.length - 1)]}
+                />
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Dashboard;

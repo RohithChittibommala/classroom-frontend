@@ -41,6 +41,7 @@ function ApprovedCourses() {
   }
 
   async function enroll(courseCode) {
+    setCourses(courses.filter((c) => c.courseCode !== courseCode));
     await api.enrollInCourse(courseCode);
   }
 

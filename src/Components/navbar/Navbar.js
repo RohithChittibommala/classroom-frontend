@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: " 20px",
+    marginBottom: " 5px",
     padding: "0px 20px",
     borderBottom: "1px solid #e6e6e6",
   },
