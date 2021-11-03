@@ -58,8 +58,6 @@ function Register() {
       };
       const res = await api.register(loginData);
 
-      console.log(res);
-
       history.push("/login");
 
       if (res.status > 200 && res.status < 300) {

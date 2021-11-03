@@ -11,6 +11,7 @@ import Pending from "./Components/Pending";
 import ApprovedCourses from "./Components/pages/ApprovedCourses";
 import Instructors from "./Components/admin/Instructors";
 import CourseDetails from "./Components/pages/CourseDetails";
+import Submissions from "./Components/submissions";
 function App() {
   let { state } = useAppState();
 
@@ -24,6 +25,11 @@ function App() {
         <PrivateRoute exact path="/approved" component={ApprovedCourses} />
         <PrivateRoute exact path="/pending" component={Pending} />
         <CourseRoute exact path="/c/:id" component={CourseDetails} />
+        <CourseRoute
+          exact
+          path="/submission/:id/:assignmentId"
+          component={Submissions}
+        />
         <AdminRoute exact path="/instructors" component={Instructors} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Signup} />

@@ -41,6 +41,8 @@ const api = {
   rejectCourse: (data) => axiosInstance.post("/course/delete", data),
 
   submitAssignment: (data) => axiosInstance.post("/assignment", data),
+  getSubmissions: (assignmentId) =>
+    axiosInstance.get(`/assignment/${assignmentId}`),
 };
 
 export default api;

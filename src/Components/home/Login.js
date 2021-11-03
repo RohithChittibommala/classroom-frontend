@@ -57,8 +57,6 @@ function Login() {
       };
       const { data } = await api.login(loginData);
 
-      console.log(data);
-
       localStorage.setItem("classroomToken", data.accessToken);
 
       dispatch(setUserData(data.user));

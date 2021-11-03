@@ -9,8 +9,9 @@ import {
 import { styled } from "@mui/system";
 import { useEffect, useState } from "react";
 import DropBoxChooser from "react-dropbox-chooser";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../../network";
 import { useAppState } from "../../state";
 import CreateAnnouncement from "../modals/CreateAnnouncement";
@@ -47,9 +48,7 @@ function CourseDetails() {
   function createAnnouncement({ text }) {
     api
       .createAnnouncement({ text, courseCode: courseDetails.courseCode })
-      .then(({ data }) => {
-        console.log(data);
-      });
+      .then(({ data }) => {});
   }
 
   function createAssignment(props) {
@@ -68,9 +67,7 @@ function CourseDetails() {
           ),
         }));
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }
 
   const handleAssignmentSubmit = (props) => {
@@ -80,16 +77,10 @@ function CourseDetails() {
       courseCode: courseDetails.courseCode,
     };
 
-    console.log(data);
-
     api
       .submitAssignment(data)
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(({ data }) => {})
+      .catch((err) => {});
   };
 
   if (loading)
@@ -157,6 +148,7 @@ function CourseDetails() {
             instructor={instructor}
             role={state.role}
             id={state.user._id}
+            courseId={courseDetails._id}
             handleAssignmentSubmit={handleAssignmentSubmit}
           />
         ) : (
@@ -209,8 +201,17 @@ function ShowAssignments({ assingments, ...props }) {
   // ({ })
 }
 
-function Assignment({ item, instructor, role, handleAssignmentSubmit, id }) {
+function Assignment({
+  item,
+  instructor,
+  role,
+  handleAssignmentSubmit,
+  id,
+  courseId,
+}) {
   const isStudent = role === "student";
+
+  const [submittted, setSubmittted] = useState(false);
 
   const onUploadSuccess = (file) => {
     const data = {
@@ -218,6 +219,7 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit, id }) {
       pdf: file[0].link,
     };
     handleAssignmentSubmit(data);
+    setSubmittted(true);
   };
 
   return (
@@ -279,8 +281,9 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit, id }) {
               <DropBoxChooser
                 appKey={"33gskexm27bl6ql"}
                 success={onUploadSuccess}
-                cancel={() => console.log("closed")}
+                cancel={() => console.log("cancelled")}
                 extensions={[".pdf"]}
+                disabled={submittted}
               >
                 <Button sx={{ marginLeft: "20px" }} variant="text">
                   Upload File
@@ -288,6 +291,22 @@ function Assignment({ item, instructor, role, handleAssignmentSubmit, id }) {
               </DropBoxChooser>
             ))}
         </BtnContainer>
+
+        {role === "instructor" && (
+          <Link
+            to={`/submission/${courseId}/${item._id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Button
+              variant="text"
+              color="primary"
+              style={{ marginLeft: "auto" }}
+              endIcon={<ArrowRightAltIcon />}
+            >
+              see all submissions
+            </Button>
+          </Link>
+        )}
       </Content>
     </Layout>
   );

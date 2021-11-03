@@ -34,12 +34,10 @@ function Dashboard() {
       api.getApprovedCourses().then(({ data }) => dispatch(setCourses(data)));
     else if (state.role === "student") {
       api.getEnrolledCourses(state.user._id).then(({ data }) => {
-        console.log(data?.courses?.filter((c) => c.isApproved));
         dispatch(setCourses(data?.courses?.filter((c) => c.isApproved)));
       });
     } else {
       api.getCoursesByInstructor().then(({ data }) => {
-        console.log(data);
         dispatch(setCourses(data));
       });
     }

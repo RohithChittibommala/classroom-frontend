@@ -13,8 +13,6 @@ function reducer(state, action) {
       };
     }
     case SET_COURSES: {
-      console.log(action.payload, "reducer");
-
       return { ...state, courses: action.payload || [] };
     }
 

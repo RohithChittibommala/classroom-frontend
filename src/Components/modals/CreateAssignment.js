@@ -49,8 +49,6 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
   });
 
   function handleSubmit(val) {
-    console.log(val);
-
     const data = { ...val, pdf: file?.link };
 
     formik.resetForm();
@@ -62,8 +60,6 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
   }
 
   const onUploadSuccess = (files) => {
-    console.log(files);
-
     setFile(files[0]);
   };
 
@@ -131,7 +127,7 @@ function CreateAssignment({ open, handleClose, handleCreateAssignment }) {
             <DropBoxChooser
               appKey={"33gskexm27bl6ql"}
               success={onUploadSuccess}
-              cancel={() => console.log("closed")}
+              cancel={() => console.log("cancelled")}
               extensions={[".pdf"]}
               disabled={file}
             >

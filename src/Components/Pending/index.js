@@ -19,11 +19,9 @@ function PendingCourses() {
     fetchData();
   }, []);
 
-  console.log(courses);
-
   const approveCourse = async ({ courseCode }) => {
     const { data } = await api.approveCourse({ courseCode });
-    console.log(data);
+
     setCourses(courses.filter((course) => course.courseCode !== courseCode));
   };
 
@@ -44,8 +42,6 @@ function PendingCourses() {
     }
     setLoading(false);
   }
-
-  console.log(state.role === "student" || state.role === "admin");
 
   const colors = ["#36474F", "#566E7A", "#566E7A", "#32AC71", "#863A95"];
 
