@@ -12,29 +12,31 @@ const ContextProvider = ({ children }) => {
     courses: [],
     enrolledCourses: [],
     role: null,
-    isLoading: true,
   });
 
-  useEffect(() => {
-    api
-      .getUserData()
-      .then(({ data }) => {
-        dispatch(setUserData(data.user));
-        if (data.user.isAdmin) {
-          dispatch(setRole("admin"));
-        } else if (data.user.isInstructor) {
-          dispatch(setRole("instructor"));
-        } else dispatch(setRole("student"));
-      })
-      .finally(dispatch(setLoadingFalse()));
-  }, []);
+  // useEffect(() => {
+  //   getUserData();
+  // }, []);
 
-  if (state.isLoading)
-    return (
-      <CenterContainer>
-        <CircularProgress />
-      </CenterContainer>
-    );
+  // const getUserData = async () => {
+  //   const { data } = await api.getUserData();
+  //   if (data.user.isAdmin) {
+  //     dispatch(setRole("admin"));
+  //   } else if (data.user.isInstructor) {
+  //     dispatch(setRole("instructor"));
+  //   } else {
+  //     dispatch(setRole("student"));
+  //   }
+  //   dispatch(setUserData(data));
+  // };
+
+  // if (!state.user) {
+  //   return (
+  //     <CenterContainer>
+  //       <CircularProgress />
+  //     </CenterContainer>
+  //   );
+  // }
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
