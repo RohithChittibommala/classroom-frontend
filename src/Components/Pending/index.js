@@ -4,12 +4,11 @@ import { CircularProgress } from "@mui/material";
 import api from "../../network";
 import { useAppState } from "../../state";
 import ClassroomCard from "../coursecard";
-import { removeCourse } from "../../state/reducer";
 
 function PendingCourses() {
   const [loading, setLoading] = React.useState(false);
 
-  const { state, dispatch } = useAppState();
+  const { state } = useAppState();
 
   const [courses, setCourses] = React.useState([]);
 

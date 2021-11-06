@@ -1,16 +1,16 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { CircularProgress, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import { styled } from "@mui/system";
 import ClassroomCard from "../coursecard";
 import api from "../../network";
 import { useAppState } from "../../state";
-import { removeCourse, setCourses } from "../../state/reducer";
 import Options from "../admin/Options";
 import MyAlert from "../../base/MyAlert";
 import CreateInstructor from "../modals/CreateInstructor";
 import CreateCourse from "../modals/CreateCourse";
-import { styled } from "@mui/system";
-import { Link } from "react-router-dom";
+import { setCourses } from "../../state/reducer";
 
 function Dashboard() {
   const { dispatch, state } = useAppState();

@@ -3,7 +3,6 @@ import { Modal, Backdrop, Fade, Typography, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useFormik } from "formik";
-import api from "../../network";
 import * as Yup from "yup";
 import MyButton from "../../base/MyButton";
 import MyTextField from "../../base/MyTextField";

@@ -43,7 +43,7 @@ function CourseDetails() {
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [params.id]);
 
   function createAnnouncement({ text }) {
     api
@@ -96,6 +96,9 @@ function CourseDetails() {
             gutterBottom
           >
             {courseDetails.courseCode}: {courseDetails.name}
+          </Typography>
+          <Typography variant="subtitle1" sx={{ color: "#fff" }} gutterBottom>
+            {courseDetails.description}
           </Typography>
         </div>
       </Banner>

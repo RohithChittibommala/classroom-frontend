@@ -13,8 +13,6 @@ function ClassroomCard({
 }) {
   const classes = useStyles();
 
-  const enrollStudent = () => {};
-
   const renderButtons = () => {
     if (admin)
       return (

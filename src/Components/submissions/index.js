@@ -39,7 +39,7 @@ export default function Submissions() {
     api.getSubmissions(assignmentId).then(({ data }) => {
       setAssignment(data);
     });
-  }, []);
+  }, [assignmentId]);
 
   return (
     <TableContainer component={Paper}>

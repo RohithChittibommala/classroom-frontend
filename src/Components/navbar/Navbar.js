@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import { IconButton, makeStyles, Typography } from "@material-ui/core";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { useAppState } from "../../state";
+import { useHistory } from "react-router-dom";
+import { Button } from "@mui/material";
 import Drawer from "../Drawer";
+import { useAppState } from "../../state";
+import { setUserData } from "../../state/reducer";
 function Navbar() {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const { state } = useAppState();
+
+  const history = useHistory();
+  const { dispatch } = useAppState();
 
   const classes = useStyles();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   function handleOpenDrawer() {
     setDrawerOpen((prev) => !prev);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("classroomToken");
+    dispatch(setUserData(null));
+    history.push("/login");
   }
 
   return (
@@ -40,6 +43,13 @@ function Navbar() {
           Classroom
         </Typography>
       </div>
+      <Button
+        variant="contained"
+        sx={{ marginLeft: "auto", marginRight: "10px" }}
+        onClick={handleLogout}
+      >
+        Logout
+      </Button>
     </nav>
   );
 }
@@ -48,9 +58,9 @@ const useStyles = makeStyles((theme) => ({
   nav: {
     height: "65px",
     backgroundColor: "#fff",
-    width: "100%",
+    // width: "100%",
     display: "flex",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
     marginBottom: " 5px",
     padding: "0px 20px",

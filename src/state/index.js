@@ -1,8 +1,5 @@
-import { styled } from "@mui/system";
-import React, { createContext, useReducer, useContext, useEffect } from "react";
-import api from "../network";
-import { CircularProgress } from "@mui/material";
-import reducer, { setLoadingFalse, setRole, setUserData } from "./reducer";
+import React, { createContext, useReducer, useContext } from "react";
+import reducer from "./reducer";
 
 export const AppContext = createContext();
 
@@ -51,10 +48,3 @@ export function useAppState() {
   const { state, dispatch } = useContext(AppContext);
   return { state, dispatch };
 }
-
-const CenterContainer = styled("div")`
-  display: flex;
-  justify-content: center;
-  height: 60vh;
-  align-items: center;
-`;

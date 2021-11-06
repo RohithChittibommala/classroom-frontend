@@ -19,26 +19,24 @@ function ApprovedCourses() {
   const classes = useStyles();
 
   React.useEffect(() => {
-    fetchData();
+    (async () => {
+      setLoading(true);
+
+      if (state.role === "instructor") {
+        api.getCoursesByInstructor().then(({ data }) => setCourses(data));
+      } else if (state.role === "admin") {
+        const response = await api.get("/courses/approved");
+        setCourses(response.data);
+      } else {
+        const response = await api.getApprovedCourses();
+        setCourses(
+          response.data.filter((c) => !enrolledCoursesSet.has(c.courseCode))
+        );
+      }
+
+      setLoading(false);
+    })();
   }, []);
-
-  async function fetchData() {
-    setLoading(true);
-
-    if (state.role === "instructor") {
-      api.getCoursesByInstructor().then(({ data }) => setCourses(data));
-    } else if (state.role === "admin") {
-      const response = await api.get("/courses/approved");
-      setCourses(response.data);
-    } else {
-      const response = await api.getApprovedCourses();
-      setCourses(
-        response.data.filter((c) => !enrolledCoursesSet.has(c.courseCode))
-      );
-    }
-
-    setLoading(false);
-  }
 
   async function enroll(courseCode) {
     setCourses(courses.filter((c) => c.courseCode !== courseCode));

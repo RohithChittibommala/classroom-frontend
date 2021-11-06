@@ -14,7 +14,7 @@ import MyAlert from "../../base/MyAlert";
 import api from "../../network/";
 import { Link, useHistory } from "react-router-dom";
 import { useAppState } from "../../state";
-import { setEnrolledCourses, setRole, setUserData } from "../../state/reducer";
+import { setRole, setUserData } from "../../state/reducer";
 
 function Login() {
   const classes = useStyles();
