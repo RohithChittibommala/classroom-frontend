@@ -3,6 +3,7 @@ export const SET_COURSES = "SET_COURSES";
 export const SET_ENROLLED_COURSES = "SET_ENROLLED_COURSES";
 export const REMOVE_COURSE = "REMOVE_COURSE";
 export const SET_ROLE = "SET_ROLE";
+export const SET_LOADING_FALSE = "SET_LOADING_FALSE";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -31,6 +32,10 @@ function reducer(state, action) {
       return { ...state, role: action.payload };
     }
 
+    case SET_LOADING_FALSE: {
+      return { ...state, isLoading: false };
+    }
+
     default:
       return state;
   }
@@ -45,6 +50,11 @@ export const setUserData = (payload) => ({
 
 export const setCourses = (payload) => ({
   type: SET_COURSES,
+  payload,
+});
+
+export const setLoadingFalse = (payload) => ({
+  type: SET_LOADING_FALSE,
   payload,
 });
 

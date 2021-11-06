@@ -34,6 +34,8 @@ const api = {
   register: (data) => axiosInstance.post("/register", data),
   login: (data) => axiosInstance.post("/login", data),
 
+  getUserData: () => axiosInstance.get("/user"),
+
   uploadImage: (data) =>
     axiosInstance.post(`${process.env.REACT_APP_CLOUDINARY_URL}`, data),
 
