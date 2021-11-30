@@ -66,12 +66,12 @@ export default function Submissions() {
                 {new Date(submission.submissionDate).toDateString()} {"  "}
                 {new Date(submission.submissionDate).toLocaleTimeString()}
               </StyledTableCell>
-              {/* <StyledTableCell align="right">
+              <StyledTableCell align="right">
                 {Date.parse(submission.deadline) >
                 Date.parse(submission.submissionDate)
-                  ? "On Time"
-                  : "Late"}
-              </StyledTableCell> */}
+                  ? "Late"
+                  : "On Time"}
+              </StyledTableCell>
               <StyledTableCell align="right">
                 <a href={submission.pdf} target="_blank" rel="noreferrer">
                   View Submission
